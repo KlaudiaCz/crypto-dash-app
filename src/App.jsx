@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import HomePage from "./pages/home";
+import AboutPage from "./pages/about";
+import Header from "./components/Header";
 import { Route, Routes } from "react-router";
 const API_URL = "/api/api/v3/coins/markets?vs_currency=usd";
 
@@ -31,28 +33,30 @@ const App = () => {
     fetchCoins(); // wywołaj funkcję pobierającą dane o monetach
   }, [limit]); // efekt uruchamiany przy zmianie limitu
 
-  
-
   return (
-    <Routes>
-      <Route
-        path="/"
-        element={
-          <HomePage
-            coins={coins}
-            filter={filter}
-            setFilter={setFilter}
-            limit={limit}
-            setLimit={setLimit}
-            sortBy={sortBy}
-            setSortBy={setSortBy}
-            loading={loading}
-            error={error}
-          />
-        }
-      />
-    </Routes>
-    );
+    <>
+      <Header />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <HomePage
+              coins={coins}
+              filter={filter}
+              setFilter={setFilter}
+              limit={limit}
+              setLimit={setLimit}
+              sortBy={sortBy}
+              setSortBy={setSortBy}
+              loading={loading}
+              error={error}
+            />
+          }
+        />
+        <Route path="/about" element={<AboutPage />} />
+      </Routes>
+    </>
+  );
 };
 
 export default App;
