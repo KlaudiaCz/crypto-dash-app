@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import CoinCard from "./components/CoinCard";
 import LimitSelector from "./components/LimitSelector";
 import FilterInput from "./components/FilterInput";
+import SortSelector from "./components/SortSelector";
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = "/api/api/v3/coins/markets?vs_currency=usd";
 
 const App = () => {
   const [coins, setCoins] = useState([]);
@@ -11,6 +12,7 @@ const App = () => {
   const [error, setError] = useState(null);
   const [limit, setLimit] = useState(10);
   const [filter, setFilter] = useState("");
+  const [sortBy, setSortBy] = useState("market_cap_desc");
 
   useEffect(() => {
     const fetchCoins = async () => {
@@ -22,7 +24,6 @@ const App = () => {
         );
         if (!res.ok) throw new Error("Failed to fetch data"); // jeśli odpowiedź serwera nie jest OK, zgłoś błąd
         const data = await res.json(); // sparsuj (przetworzyć dane) odpowiedź jako JSON
-        console.log(data); // wyświetl pobrane dane w konsoli
         setCoins(data); // zapisz dane o monetach w stanie komponentu
       } catch (err) {
         setError(err.message); // zapisz komunikat o błędzie w stanie
@@ -38,7 +39,28 @@ const App = () => {
       coin.name.toLowerCase().includes(filter.toLowerCase()) ||
       coin.symbol.toLowerCase().includes(filter.toLowerCase()) // sprawdź, czy nazwa lub symbol monety zawiera tekst z filtra (ignorując wielkość liter)
     );
-  });
+  })
+  // po przefiltrowaniu tworzymy kopię wyniku, bo sortowanie zmienia tablicę w miejscu,
+  // a potem sortujemy tę kopię według wybranego kryterium `sortBy`.
+  .slice() // utwórz kopię tablicy przed sortowaniem, aby nie modyfikować oryginalnych danych
+  .sort((a, b) => {
+    switch (sortBy) {
+      case "market_cap_desc":
+        return b.marked_cap - a.market_cap; // sortuj malejąco po kapitalizacji rynkowej
+      case "market_cap_asc":
+        return a.market_cap - b.market_cap; // sortuj rosnąco po kapitalizacji rynkowej
+      case "price_desc":
+        return b.current_price - a.current_price; // sortuj malejąco po cenie
+      case "price_asc":
+        return a.current_price - b.current_price; // sortuj rosnąco po cenie
+      case "change_desc":
+        return b.price_change_percentage_24h - a.price_change_percentage_24h; // sortuj malejąco po zmianie procentowej
+      case "change_asc":
+        return a.price_change_percentage_24h - b.price_change_percentage_24h; // sortuj rosnąco po zmianie procentowej
+      default:
+        return 0; // jeśli nie ma dopasowania, nie zmieniaj kolejności
+    }
+  })
 
   return (
     <div>
@@ -50,6 +72,7 @@ const App = () => {
       <div className="top-controls">
         <FilterInput filter={filter} onFilterChange={setFilter} />{" "}
         {/* komponent do filtrowania, przekazując aktualny filtr i funkcję do jego zmiany */}
+        <SortSelector sortBy={sortBy} onSortChange={setSortBy} />{" "}
         <LimitSelector limit={limit} onLimitChange={setLimit} />{" "}
         {/* komponent do wyboru limitu, przekazując aktualny limit i funkcję do jego zmiany */}
       </div>
