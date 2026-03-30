@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import HomePage from "./pages/home";
 import AboutPage from "./pages/about";
+import NotFoundPage from "./pages/not-found";
 import Header from "./components/Header";
 import { Route, Routes } from "react-router";
 const API_URL = "/api/api/v3/coins/markets?vs_currency=usd";
@@ -54,6 +55,7 @@ const App = () => {
           }
         />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
   );
