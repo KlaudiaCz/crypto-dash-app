@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router";
+import Spinner from "../components/Spinner";
 const API_URL = import.meta.env.VITE_COIN_API_URL; // Pobieramy URL z pliku .env
 
 const CoinDetailsPage = () => {
@@ -29,14 +30,12 @@ const CoinDetailsPage = () => {
       <Link to="/" className="back-link">
         ← Back to Home
       </Link>
-
       <h1 className="coin-details-title">
         {coin
           ? `${coin.name} (${coin.symbol.toUpperCase()})`
           : "Coin Details"}{" "}
       </h1>
-        
-      {loading && <p>Loading...</p>}  
+      {loading && <Spinner />} {/* Wyświetl spinner podczas ładowania */}
       {error && <div className="error">❌ {error}</div>}
       {!loading && !error && (
         <>
@@ -88,9 +87,9 @@ const CoinDetailsPage = () => {
               <p>
                 🌐{" "}
                 <a
-                  href={coin.links.homepage[0]}    // Pobierz pierwszy link z tablicy homepage
-                  target="_blank"   // Otwórz link w nowej karcie
-                  rel="noopener noreferrer"     // Zapewnij bezpieczeństwo przy otwieraniu linku
+                  href={coin.links.homepage[0]} // Pobierz pierwszy link z tablicy homepage
+                  target="_blank" // Otwórz link w nowej karcie
+                  rel="noopener noreferrer" // Zapewnij bezpieczeństwo przy otwieraniu linku
                 >
                   Official Website
                 </a>
@@ -109,16 +108,14 @@ const CoinDetailsPage = () => {
               </p>
             )}
             {coin.categories.length > 0 && (
-                // Sprawdź, czy istnieją kategorie i wyświetl je jako listę oddzieloną przecinkami
-                <p>
-                  🏷️ Categories: {coin.categories.join(", ")} 
-                </p>
-              )}
+              // Sprawdź, czy istnieją kategorie i wyświetl je jako listę oddzieloną przecinkami
+              <p>🏷️ Categories: {coin.categories.join(", ")}</p>
+            )}
           </div>
         </>
       )}
-
-      {!loading && !error && !coin && <p>No Data Found!</p>} {/* Obsługa przypadku, gdy nie znaleziono danych o monecie */}
+      {!loading && !error && !coin && <p>No Data Found!</p>}{" "}
+      {/* Obsługa przypadku, gdy nie znaleziono danych o monecie */}
     </div>
   );
 };
