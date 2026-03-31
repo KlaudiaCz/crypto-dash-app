@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import HomePage from "./pages/home";
 import AboutPage from "./pages/about";
+import CoinDetailsPage from "./pages/coin-details";
 import NotFoundPage from "./pages/not-found";
 import Header from "./components/Header";
 import { Route, Routes } from "react-router";
@@ -55,6 +56,7 @@ const App = () => {
           }
         />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/coin/:id" element={<CoinDetailsPage />} /> {/* Dodajemy trasę dla szczegółów monety */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>

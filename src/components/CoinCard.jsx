@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 const CoinCard = ({ coin }) => {
   const priceChange = coin.price_change_percentage_24h;
   const priceChangeText =
@@ -12,6 +14,7 @@ const CoinCard = ({ coin }) => {
       : "neutral";
 
   return (
+    <Link to={`/coin/${coin.id}`}>
     <div className="coin-card">
       <div className="coin-header">
         <img src={coin.image} alt={coin.name} className="coin-image" />
@@ -24,6 +27,7 @@ const CoinCard = ({ coin }) => {
       <p className={priceChangeClass}>{priceChangeText}</p>
       <p>Market Cap: {coin.market_cap?.toLocaleString()}</p>
     </div>
+    </Link>
   );
 };
 
