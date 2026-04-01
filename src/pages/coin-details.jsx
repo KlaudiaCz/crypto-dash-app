@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router";
+import CoinChart from "../components/CoinChart";
 import Spinner from "../components/Spinner";
 const API_URL = import.meta.env.VITE_COIN_API_URL; // Pobieramy URL z pliku .env
 
@@ -81,6 +82,8 @@ const CoinDetailsPage = () => {
               Last Updated: {new Date(coin.last_updated).toLocaleDateString()}
             </h4>
           </div>
+
+          <CoinChart coinId={coin.id} /> {/* Dodaj wykres dla tej monety */}
 
           <div className="coin-details-links">
             {coin.links.homepage[0] && ( // Sprawdź, czy pierwszy link w tablicy homepage istnieje
