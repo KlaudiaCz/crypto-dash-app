@@ -14,7 +14,9 @@ const CoinCard = ({ coin }) => {
       : "neutral";
 
   return (
+    // Link do szczegółów monety, przekazując ID monety w URL
     <Link to={`/coin/${coin.id}`}>
+      {/* Karta monety z podstawowymi informacjami i stylizacją w zależności od zmiany ceny */}
     <div className="coin-card">
       <div className="coin-header">
         <img src={coin.image} alt={coin.name} className="coin-image" />

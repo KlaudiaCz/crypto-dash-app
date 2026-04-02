@@ -5,7 +5,7 @@ import CoinDetailsPage from "./pages/coin-details";
 import NotFoundPage from "./pages/not-found";
 import Header from "./components/Header";
 import { Route, Routes } from "react-router";
-const API_URL = "/api/api/v3/coins/markets?vs_currency=usd";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const App = () => {
   const [coins, setCoins] = useState([]);
